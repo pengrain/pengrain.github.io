@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title><![CDATA[HEXO搭建个人博客]]></title>
+      <url>http://yoursite.com/2016/08/24/HEXO%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+      <content type="html"><![CDATA[<p>配置环境#</p>
+<ul>
+<li>安装Node（必须）</li>
+<li>安装Git（必须）</li>
+<li>申请GitHub（必须）</li>
+<li>正式安装HEXO　</li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[iOS编码规范]]></title>
       <url>http://yoursite.com/2016/08/24/iOS%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/</url>
       <content type="html"><![CDATA[<pre><code>[TOC]
