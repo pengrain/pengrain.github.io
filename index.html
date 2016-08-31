@@ -391,74 +391,90 @@
 <p>fillMode属性的理解该属性定义了你的动画在开始和结束时的动作。默认值是 kCAFillModeRemoved。<br>kCAFillModeRemoved 这个是默认值,也就是说当动画开始前和动画结束后,动画对layer都没有影响,动画结束后,layer会恢复到之前的状态<br>kCAFillModeForwards 当动画结束后,layer会一直保持着动画最后的状态<br>kCAFillModeBackwards 这个和kCAFillModeForwards是相对的,就是在动画开始前,你只要将动画加入了一个layer,layer便立即进入动画的初始状态。因为有可能出现fromValue不是目前layer的初始状态的情况，如果fromValue就是layer当前的状态，则这个参数就没太大意义。<br>kCAFillModeBoth 理解了上面两个,这个就很好理解了,这个其实就是上面两个的合成.动画加入后开始之前,layer便处于动画初始状态,动画结束后layer保持动画最后的状态.</p>
 </blockquote>
 <figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="comment">//动画终了后不返回初始状态</span></div><div class="line"><span class="comment">//animation.removedOnCompletion = NO;</span></div><div class="line"><span class="comment">//animation.fillMode = kCAFillModeForwards;</span></div></pre></td></tr></table></figure>
-<p>CABasicAnimation通过改变animationWithKeyPath来改变动画方式：</p>
+<p>CABasicAnimation的timingFunction设置</p>
+<blockquote>
+<p>kCAMediaTimingFunctionLinear 传这个值，在整个动画时间内动画都是以一个相同的速度来改变。也就是匀速运动。<br>kCAMediaTimingFunctionEaseIn 使用该值，动画开始时会较慢，之后动画会加速。<br>kCAMediaTimingFunctionEaseOut 使用该值，动画在开始时会较快，之后动画速度减慢。<br>kCAMediaTimingFunctionEaseInEaseOut 使用该值，动画在开始和结束时速度较慢，中间时间段内速度较快。</p>
+</blockquote>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">anim = [<span class="built_in">CAMediaTimingFunction</span> functionWithName:kCAMediaTimingFunctionEaseInEaseOut];</div></pre></td></tr></table></figure>
+<p>CABasicAnimation通过改变animationWithKeyPath来改变动画方式，<br>animationWithKeyPath常用值</p>
 <table>
 <thead>
 <tr>
-<th>animationWithKeyPath常用值</th>
-<th>效果</th>
+<th>值</th>
+<th>说明</th>
+<th>使用形式</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>transform.scale （可以分别设置X或是Y）</td>
 <td>比例转换</td>
+<td>@(0.8) / [NSNumber numberWithFloat:0.8]</td>
 </tr>
 <tr>
-<td>transform.rotation （可以分别设置X或是Y）</td>
+<td>transform.rotation （可以分别设置X、Y、Z）</td>
 <td>旋转</td>
+<td>@(M_PI)/ [NSNumber numberWithFloat:M_PI]</td>
 </tr>
 <tr>
 <td>opacity</td>
 <td>透明度（可以用来实现闪烁效果）</td>
+<td>@(0.8) /[NSNumber numberWithFloat:1.f]</td>
 </tr>
 <tr>
 <td>backgroundColor</td>
 <td>背景颜色修改</td>
+<td>(id)[UIColor greenColor].CGColor</td>
 </tr>
 <tr>
 <td>cornerRadius</td>
 <td>圆角</td>
-</tr>
-<tr>
-<td>borderWidth</td>
-<td>边框宽度</td>
-</tr>
-<tr>
-<td>shadowColor</td>
-<td>阴影颜色</td>
-</tr>
-<tr>
-<td>shadowOffset</td>
-<td>阴影偏移 </td>
-</tr>
-<tr>
-<td>shadowOpacity</td>
-<td>阴影透明度</td>
-</tr>
-<tr>
-<td>shadowRadius</td>
-<td>阴影圆角</td>
-</tr>
-<tr>
-<td>hidden</td>
-<td>隐藏</td>
+<td>@(20) /[NSNumber numberWithFloat:20.f]</td>
 </tr>
 <tr>
 <td>contents</td>
 <td>可以用来做图片的变换</td>
+<td>(id)[UIImage imageNamed:@”3.jpg”].CGImage</td>
 </tr>
 <tr>
-<td>contentsRect</td>
-<td></td>
+<td>borderWidth</td>
+<td>边框宽度</td>
+<td>@(20) /[NSNumber numberWithFloat:1.f]</td>
 </tr>
 <tr>
-<td>cornerRadius</td>
-<td></td>
+<td>shadowColor</td>
+<td>阴影颜色</td>
+<td>(id)[UIColor greenColor].CGColor</td>
+</tr>
+<tr>
+<td>shadowOffset</td>
+<td>阴影偏移</td>
+<td>[NSValue valueWithUIOffset:UIOffsetMake(5, 5)]</td>
+</tr>
+<tr>
+<td>shadowOpacity</td>
+<td>阴影透明度</td>
+<td>@(0.8)</td>
+</tr>
+<tr>
+<td>shadowRadius</td>
+<td>阴影圆角</td>
+<td>@(20) /[NSNumber numberWithFloat:20.f]</td>
+</tr>
+<tr>
+<td>hidden</td>
+<td>隐藏</td>
+<td>@(1)</td>
+</tr>
+<tr>
+<td>contentsRect.size.width</td>
+<td>横向拉升缩放</td>
+<td>@(0.4) 0~1之间</td>
 </tr>
 <tr>
 <td>bounds</td>
-<td></td>
+<td>大小中心不变</td>
+<td>[NSValue valueWithCGRect:CGRectMark(0,0,100,100)]</td>
 </tr>
 <tr>
 <td>frame</td>
@@ -474,7 +490,8 @@
 </tr>
 <tr>
 <td>position</td>
-<td></td>
+<td>移动</td>
+<td>[NSValue valueWithCGPoint:_imageView.layer.position];</td>
 </tr>
 </tbody>
 </table>
