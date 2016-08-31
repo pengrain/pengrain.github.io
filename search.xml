@@ -4,6 +4,115 @@
   
     
     <entry>
+      <title><![CDATA[CABasicAnimation动画]]></title>
+      <url>http://yoursite.com/2016/08/31/CABasicAnimation%E5%8A%A8%E7%94%BB/</url>
+      <content type="html"><![CDATA[<h2 id="CABasicAnimation动画"><a href="#CABasicAnimation动画" class="headerlink" title="CABasicAnimation动画"></a>CABasicAnimation动画</h2><p>在CABasicAnimation类中有三个属性：</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="comment">//动画的开始帧和结束帧</span></div><div class="line"><span class="comment">//fromValue : 开始值</span></div><div class="line"><span class="comment">//toValue   : 终了值（绝对值）</span></div><div class="line"><span class="comment">//byValue   : 终了值（相对值）</span></div><div class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="keyword">id</span> fromValue;</div><div class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="keyword">id</span> toValue;</div><div class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="keyword">id</span> byValue;</div></pre></td></tr></table></figure>
+<p>当然还有这些继承的属性：</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="comment">//CABasicAnimation 的相关属性</span></div><div class="line"><span class="comment">//duration      :动画时长（秒为单位）</span></div><div class="line"><span class="comment">//repeatCount   :重复次数，永久重复的话设置为HUGE_VALF</span></div><div class="line"><span class="comment">//RepeatDuration:定了动画应该被重复多久。动画会一直重复,直到设定的时间流逝完。它不应该和 repeatCount 一起使用</span></div><div class="line"><span class="comment">//beginTime     :指定动画开始时间。从开始指定延迟几秒执行的话，请设置为「CACurrentMediaTime() + 秒数」的形式。</span></div><div class="line"><span class="comment">//timingFunction:设定动画的速度变化</span></div><div class="line"><span class="comment">//autoreverses  :动画结束时是否执行逆动画</span></div><div class="line"><span class="comment">//speed			 :默认的值为 1.0.这意味着动画播放按照默认的速度。如果你改变这个值为 2.0,动画会用 2 倍的速度播放。</span></div></pre></td></tr></table></figure>
+<p>在使用CABasicAnimation执行动画，在动画结束后会回归到动画开始前的状态。<br>想要解决这个问题需要设置 <strong>removedOnCompletion</strong> 和 <strong>fillMode</strong> 属性。</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="comment">//动画终了后不返回初始状态</span></div><div class="line"><span class="comment">//animation.removedOnCompletion = NO;</span></div><div class="line"><span class="comment">//animation.fillMode = kCAFillModeForwards;</span></div></pre></td></tr></table></figure>
+<p>CABasicAnimation通过改变animationWithKeyPath来改变动画方式：</p>
+<table>
+<thead>
+<tr>
+<th>animationWithKeyPath常用值</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>transform.scale （可以分别设置X或是Y）</td>
+<td>比例转换</td>
+</tr>
+<tr>
+<td>transform.rotation （可以分别设置X或是Y）</td>
+<td>旋转</td>
+</tr>
+<tr>
+<td>opacity</td>
+<td>透明度（可以用来实现闪烁效果）</td>
+</tr>
+<tr>
+<td>backgroundColor</td>
+<td>背景颜色修改</td>
+</tr>
+<tr>
+<td>cornerRadius</td>
+<td>圆角</td>
+</tr>
+<tr>
+<td>borderWidth</td>
+<td>边框宽度</td>
+</tr>
+<tr>
+<td>shadowColor</td>
+<td>阴影颜色</td>
+</tr>
+<tr>
+<td>shadowOffset</td>
+<td>阴影偏移 </td>
+</tr>
+<tr>
+<td>shadowOpacity</td>
+<td>阴影透明度</td>
+</tr>
+<tr>
+<td>shadowRadius</td>
+<td>阴影圆角</td>
+</tr>
+<tr>
+<td>hidden</td>
+<td>隐藏</td>
+</tr>
+<tr>
+<td>contents</td>
+<td>可以用来做图片的变换</td>
+</tr>
+<tr>
+<td>contentsRect</td>
+<td></td>
+</tr>
+<tr>
+<td>cornerRadius</td>
+<td></td>
+</tr>
+<tr>
+<td>bounds</td>
+<td></td>
+</tr>
+<tr>
+<td>frame</td>
+<td></td>
+</tr>
+<tr>
+<td>mask</td>
+<td></td>
+</tr>
+<tr>
+<td>masksToBounds</td>
+<td></td>
+</tr>
+<tr>
+<td>position</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>以下为实例代码：</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="comment">///图片替换动画</span></div><div class="line">- (<span class="keyword">void</span>)contents &#123;</div><div class="line">    </div><div class="line">    <span class="built_in">CABasicAnimation</span> *anim = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"contents"</span>];</div><div class="line">    anim.duration = <span class="number">1.</span>f;</div><div class="line">    anim.fromValue = (<span class="keyword">id</span>)[<span class="built_in">UIImage</span> imageNamed:<span class="string">@"3.jpg"</span>].CGImage;</div><div class="line">    anim.toValue = (<span class="keyword">id</span>)[<span class="built_in">UIImage</span> imageNamed:<span class="string">@"2.png"</span>].CGImage;</div><div class="line"> </div><div class="line">    </div><div class="line">    anim.timingFunction = [<span class="built_in">CAMediaTimingFunction</span> functionWithName:kCAMediaTimingFunctionEaseInEaseOut];</div><div class="line">    anim.repeatCount = <span class="built_in">CGFLOAT_MAX</span>;</div><div class="line">    anim.autoreverses = <span class="literal">YES</span>;</div><div class="line">    </div><div class="line">    [_imageView.layer addAnimation:anim forKey:<span class="literal">nil</span>];</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="comment">//闪烁动画</span></div><div class="line">- (<span class="keyword">void</span>)opacityForever &#123;</div><div class="line">    <span class="built_in">CABasicAnimation</span> *animation = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"opacity"</span>];</div><div class="line">    <span class="comment">//设置动画属性</span></div><div class="line">    animation.fromValue = [<span class="built_in">NSNumber</span> numberWithFloat:<span class="number">1.</span>f];</div><div class="line">    animation.toValue = [<span class="built_in">NSNumber</span> numberWithFloat:<span class="number">0.</span>f];</div><div class="line">    </div><div class="line">    animation.duration = <span class="number">0.5</span>;<span class="comment">//持续时间</span></div><div class="line">    animation.repeatCount = MAXFLOAT;<span class="comment">//重复次数</span></div><div class="line">    animation.autoreverses = <span class="literal">YES</span>;</div><div class="line">    </div><div class="line">    <span class="comment">//将动画添加到视图层</span></div><div class="line">    [_imageView.layer addAnimation:animation forKey:<span class="string">@"opacity_layer"</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="comment">///移动动画</span></div><div class="line">- (<span class="keyword">void</span>)startMove &#123;</div><div class="line"></div><div class="line">    <span class="comment">//创建动画</span></div><div class="line">    <span class="built_in">CABasicAnimation</span> *animation = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"position"</span>];</div><div class="line">    </div><div class="line">    <span class="comment">//设置动画属性</span></div><div class="line">    animation.fromValue = [<span class="built_in">NSValue</span> valueWithCGPoint:_imageView.layer.position];<span class="comment">//起始帧</span></div><div class="line">    animation.toValue = [<span class="built_in">NSValue</span> valueWithCGPoint:<span class="keyword">self</span>.view.center];<span class="comment">//结束帧</span></div><div class="line">    </div><div class="line">    animation.duration = <span class="number">10</span>;<span class="comment">//持续时间</span></div><div class="line">    animation.repeatCount = MAXFLOAT;<span class="comment">//重复次数</span></div><div class="line">    animation.autoreverses = <span class="literal">YES</span>;<span class="comment">//结束后执行逆动画</span></div><div class="line">    </div><div class="line">    <span class="comment">//将动画添加到视图层</span></div><div class="line">    [_imageView.layer addAnimation:animation forKey:<span class="string">@"position_layer"</span>];</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="comment">///旋转动画</span></div><div class="line">- (<span class="keyword">void</span>)startRotation &#123;</div><div class="line">    <span class="comment">//创建动画</span></div><div class="line">    <span class="built_in">CABasicAnimation</span> *animation = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"transform.rotation"</span>];</div><div class="line">    </div><div class="line">    <span class="comment">//设置动画属性</span></div><div class="line">    animation.fromValue = [<span class="built_in">NSNumber</span> numberWithFloat:<span class="number">0.0</span>];<span class="comment">//开始角度</span></div><div class="line">    animation.toValue = [<span class="built_in">NSNumber</span> numberWithFloat:<span class="number">2</span> * M_PI];<span class="comment">//结束角度</span></div><div class="line">    animation.duration = <span class="number">10</span>;<span class="comment">//持续时间</span></div><div class="line">    animation.repeatCount = MAXFLOAT;<span class="comment">//重复次数</span></div><div class="line">    </div><div class="line">    </div><div class="line">    <span class="comment">//将动画添加到视图层</span></div><div class="line">    [_imageView.layer addAnimation:animation forKey:<span class="string">@"rotation_layer"</span>];</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="comment">///缩放动画</span></div><div class="line">- (<span class="keyword">void</span>)startScale &#123;</div><div class="line">    <span class="comment">//创建动画</span></div><div class="line">    <span class="built_in">CABasicAnimation</span> *animation = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"transform.scale"</span>];</div><div class="line">    </div><div class="line">    <span class="comment">//设置动画属性</span></div><div class="line">    animation.fromValue = [<span class="built_in">NSNumber</span> numberWithFloat:<span class="number">1.0</span>];<span class="comment">//开始缩放倍数</span></div><div class="line">    animation.toValue = [<span class="built_in">NSNumber</span> numberWithFloat:<span class="number">2.0</span>];<span class="comment">//结束时的倍数</span></div><div class="line">    </div><div class="line">    animation.duration = <span class="number">10</span>;<span class="comment">//持续时间</span></div><div class="line">    animation.repeatCount = MAXFLOAT;<span class="comment">//重复次数</span></div><div class="line">    animation.autoreverses = <span class="literal">YES</span>;<span class="comment">//结束后执行逆动画</span></div><div class="line">    </div><div class="line">    </div><div class="line">    <span class="comment">//将动画添加到视图层</span></div><div class="line">    [_imageView.layer addAnimation:animation forKey:<span class="string">@"scale_layer"</span>];</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> *  背景颜色</div><div class="line"> */</div><div class="line">- (<span class="keyword">void</span>)backgroundColorAnim &#123;</div><div class="line">    <span class="comment">//创建动画</span></div><div class="line">    <span class="built_in">CABasicAnimation</span> *animation = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"backgroundColor"</span>];</div><div class="line">    </div><div class="line">    <span class="comment">//设置动画属性</span></div><div class="line">    animation.fromValue = (__bridge <span class="keyword">id</span> _Nullable)([<span class="built_in">UIColor</span> greenColor].CGColor);<span class="comment">//起始帧</span></div><div class="line">    animation.toValue = (__bridge <span class="keyword">id</span> _Nullable)([<span class="built_in">UIColor</span> redColor].CGColor);<span class="comment">//结束帧</span></div><div class="line">    </div><div class="line">    animation.duration = <span class="number">10</span>;<span class="comment">//持续时间</span></div><div class="line">    animation.repeatCount = HUGE_VALF;<span class="comment">//重复次数</span></div><div class="line">    animation.autoreverses = <span class="literal">YES</span>;<span class="comment">//结束后执行逆动画</span></div><div class="line">    </div><div class="line">    <span class="comment">//将动画添加到视图层</span></div><div class="line">    [_imageView.layer addAnimation:animation forKey:<span class="literal">nil</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="comment">///组合动画</span></div><div class="line">- (<span class="keyword">void</span>)startMoveAndRotation &#123;</div><div class="line">    <span class="comment">//创建动画</span></div><div class="line">    <span class="built_in">CABasicAnimation</span> *animation1 = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"position"</span>];</div><div class="line">    </div><div class="line">    <span class="comment">//创建动画</span></div><div class="line">    <span class="built_in">CABasicAnimation</span> *animation2 = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"transform.rotation"</span>];</div><div class="line">    </div><div class="line">    <span class="comment">//设置移动终点</span></div><div class="line">    animation1.toValue = [<span class="built_in">NSValue</span> valueWithCGPoint:<span class="keyword">self</span>.view.center];<span class="comment">//结束帧</span></div><div class="line">    <span class="comment">//设置旋转角度</span></div><div class="line">    animation2.toValue = [<span class="built_in">NSNumber</span> numberWithFloat:<span class="number">2</span> * M_PI];<span class="comment">//结束角度</span></div><div class="line">    </div><div class="line">    <span class="comment">//添加到动画组</span></div><div class="line">    <span class="built_in">CAAnimationGroup</span> *group = [<span class="built_in">CAAnimationGroup</span> animation];</div><div class="line">    <span class="comment">//设置动画组属性</span></div><div class="line">    group.duration = <span class="number">10</span>;</div><div class="line">    group.repeatCount = <span class="number">1</span>;</div><div class="line">    group.autoreverses = <span class="literal">YES</span>;</div><div class="line">    group.beginTime = <span class="built_in">CACurrentMediaTime</span>() + <span class="number">2</span>; <span class="comment">// 2秒后执行</span></div><div class="line">    </div><div class="line">    <span class="comment">//注册代理</span></div><div class="line">    group.delegate = <span class="keyword">self</span>;</div><div class="line">    </div><div class="line">    <span class="comment">//添加动画</span></div><div class="line">    group.animations = [<span class="built_in">NSArray</span> arrayWithObjects:animation1, animation2, <span class="literal">nil</span>];</div><div class="line">    [_imageView.layer addAnimation:group forKey:<span class="string">@"group"</span>];</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们还可以通过代理方法来监听到动画的开始和结束</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> *  动画开始</div><div class="line"> */</div><div class="line">- (<span class="keyword">void</span>)animationDidStart:(<span class="built_in">CAAnimation</span> *)anim&#123;</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"动画开始"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> *  动画结束</div><div class="line"> */</div><div class="line">- (<span class="keyword">void</span>)animationDidStop:(<span class="built_in">CAAnimation</span> *)anim finished:(<span class="built_in">BOOL</span>)flag&#123;</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"动画结束"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[HEXO搭建个人博客]]></title>
       <url>http://yoursite.com/2016/08/24/HEXO%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
       <content type="html"><![CDATA[<h1 id="HEXO搭建个人博客"><a href="#HEXO搭建个人博客" class="headerlink" title="HEXO搭建个人博客"></a>HEXO搭建个人博客</h1><p>这篇教程是针对Mac的，参考链接：<a href="https://hexo.io/zh-cn/docs/index.html" target="_blank" rel="external">Hexo文档</a></p>
