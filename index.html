@@ -344,7 +344,44 @@
             <h2 id="CABasicAnimation动画"><a href="#CABasicAnimation动画" class="headerlink" title="CABasicAnimation动画"></a>CABasicAnimation动画</h2><p>在CABasicAnimation类中有三个属性：</p>
 <figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="comment">//动画的开始帧和结束帧</span></div><div class="line"><span class="comment">//fromValue : 开始值</span></div><div class="line"><span class="comment">//toValue   : 终了值（绝对值）</span></div><div class="line"><span class="comment">//byValue   : 终了值（相对值）</span></div><div class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="keyword">id</span> fromValue;</div><div class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="keyword">id</span> toValue;</div><div class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="keyword">id</span> byValue;</div></pre></td></tr></table></figure>
 <p>当然还有这些继承的属性：</p>
-<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="comment">//CABasicAnimation 的相关属性</span></div><div class="line"><span class="comment">//duration      :动画时长（秒为单位）</span></div><div class="line"><span class="comment">//repeatCount   :重复次数，永久重复的话设置为HUGE_VALF</span></div><div class="line"><span class="comment">//RepeatDuration:定了动画应该被重复多久。动画会一直重复,直到设定的时间流逝完。它不应该和 repeatCount 一起使用</span></div><div class="line"><span class="comment">//beginTime     :指定动画开始时间。从开始指定延迟几秒执行的话，请设置为「CACurrentMediaTime() + 秒数」的形式。</span></div><div class="line"><span class="comment">//timingFunction:设定动画的速度变化</span></div><div class="line"><span class="comment">//autoreverses  :动画结束时是否执行逆动画</span></div><div class="line"><span class="comment">//speed			 :默认的值为 1.0.这意味着动画播放按照默认的速度。如果你改变这个值为 2.0,动画会用 2 倍的速度播放。</span></div></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>CABasicAnimation的相关属性</th>
+<th>属性含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>duration</td>
+<td>动画时长（秒为单位）</td>
+</tr>
+<tr>
+<td>repeatCount</td>
+<td>重复次数，永久重复的话设置为HUGE_VALF</td>
+</tr>
+<tr>
+<td>RepeatDuration</td>
+<td>定了动画应该被重复多久。动画会一直重复,直到设定的时间流逝完。它不应该和 repeatCount 一起使用</td>
+</tr>
+<tr>
+<td>beginTime</td>
+<td>指定动画开始时间。从开始指定延迟几秒执行的话，请设置为「CACurrentMediaTime() + 秒数」的形式。</td>
+</tr>
+<tr>
+<td>timingFunction</td>
+<td>设定动画的速度变化</td>
+</tr>
+<tr>
+<td>autoreverses</td>
+<td>动画结束时是否执行逆动画</td>
+</tr>
+<tr>
+<td>speed</td>
+<td>默认的值为 1.0.这意味着动画播放按照默认的速度。如果你改变这个值为 2.0,动画会用 2 倍的速度播放。</td>
+</tr>
+</tbody>
+</table>
 <p>在使用CABasicAnimation执行动画，在动画结束后会回归到动画开始前的状态。<br>想要解决这个问题需要设置 <strong>removedOnCompletion</strong> 和 <strong>fillMode</strong> 属性。</p>
 <figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="comment">//动画终了后不返回初始状态</span></div><div class="line"><span class="comment">//animation.removedOnCompletion = NO;</span></div><div class="line"><span class="comment">//animation.fillMode = kCAFillModeForwards;</span></div></pre></td></tr></table></figure>
 <p>CABasicAnimation通过改变animationWithKeyPath来改变动画方式：</p>
