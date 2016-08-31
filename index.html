@@ -382,7 +382,14 @@
 </tr>
 </tbody>
 </table>
-<p>在使用CABasicAnimation执行动画，在动画结束后会回归到动画开始前的状态。<br>想要解决这个问题需要设置 <strong>removedOnCompletion</strong> 和 <strong>fillMode</strong> 属性。</p>
+<p><strong>在使用CABasicAnimation执行动画，在动画结束后会回归到动画开始前的状态。</strong></p>
+<blockquote>
+<p>为什么动画结束后返回原状态？首先我们需要搞明白一点的是，layer动画运行的过程是怎样的？其实在我们给一个视图添加layer动画时，真正移动并不是我们的视图本身，而是 presentation layer 的一个缓存。动画开始时 presentation layer开始移动，原始layer隐藏，动画结束时，presentation layer从屏幕上移除，原始layer显示。这就解释了为什么我们的视图在动画结束后又回到了原来的状态，因为它根本就没动过。<br>这个同样也可以解释为什么在动画移动过程中，我们为何不能对其进行任何操作。<br>所以在我们完成layer动画之后，最好将我们的layer属性设置为我们最终状态的属性，然后将presentation layer 移除掉。</p>
+</blockquote>
+<p>想要解决这个问题需要设置 <strong>removedOnCompletion</strong> 和 <strong>fillMode</strong> 属性。</p>
+<blockquote>
+<p>fillMode属性的理解该属性定义了你的动画在开始和结束时的动作。默认值是 kCAFillModeRemoved。<br>kCAFillModeRemoved 这个是默认值,也就是说当动画开始前和动画结束后,动画对layer都没有影响,动画结束后,layer会恢复到之前的状态<br>kCAFillModeForwards 当动画结束后,layer会一直保持着动画最后的状态<br>kCAFillModeBackwards 这个和kCAFillModeForwards是相对的,就是在动画开始前,你只要将动画加入了一个layer,layer便立即进入动画的初始状态。因为有可能出现fromValue不是目前layer的初始状态的情况，如果fromValue就是layer当前的状态，则这个参数就没太大意义。<br>kCAFillModeBoth 理解了上面两个,这个就很好理解了,这个其实就是上面两个的合成.动画加入后开始之前,layer便处于动画初始状态,动画结束后layer保持动画最后的状态.</p>
+</blockquote>
 <figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="comment">//动画终了后不返回初始状态</span></div><div class="line"><span class="comment">//animation.removedOnCompletion = NO;</span></div><div class="line"><span class="comment">//animation.fillMode = kCAFillModeForwards;</span></div></pre></td></tr></table></figure>
 <p>CABasicAnimation通过改变animationWithKeyPath来改变动画方式：</p>
 <table>
